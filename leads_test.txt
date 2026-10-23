@@ -1,0 +1,27 @@
+LEAD 1 - nominal (celui de l'enonce)
+Nouveau projet — Mme Claire D. — 06 12 34 56 78 — claire.d@exemple.fr — Saint-Chamond (42) — Rénovation salle de bain complète (douche à l'italienne, carrelage, meuble vasque) — Budget : 8 000 à 12 000 € — Démarrage souhaité : sous 3 mois.
+
+LEAD 2 - incomplet (ni telephone ni email)
+Nouveau projet — M. Karim B. — Saint-Étienne (42) — Réfection de toiture — Budget : non précisé — Démarrage souhaité : dès que possible.
+
+LEAD 3 - doublon (meme email et meme telephone que le lead 1, ecrits autrement)
+Nouveau projet — Claire Dupont — 0612345678 — Claire.D@exemple.fr — Saint-Chamond (42) — Salle de bain, remplacement de la baignoire — Budget : 9 000 € — Démarrage souhaité : dans 2 mois.
+
+LEAD 4 - sans budget
+Nouveau projet — M. et Mme Rossi — +33 7 45 67 89 01 — rossi.famille@exemple.fr — Firminy (42) — Rénovation de cuisine complète — Budget : à définir — Démarrage souhaité : sous 6 mois.
+
+LEAD 5 - mail bruite, autre format (doit declencher le secours par l'IA)
+Bonjour,
+Vous avez reçu une nouvelle demande via Habitat Presto.
+
+Contact : Mme Sophie M.
+Tél : 04 77 12 34 56
+Mail : sophie.m@exemple.fr
+Lieu : Saint-Étienne 42000
+Projet : peinture de 3 pièces et pose de parquet
+Budget estimé : entre 3 000 et 5 000 euros
+Délai : le plus tôt possible
+
+Cordialement,
+L'équipe Habitat Presto
+Pour vous désinscrire, cliquez ici.
