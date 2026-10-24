@@ -91,68 +91,58 @@ def step_card(num, head, text, w):
     return inner
 
 
-steps = [
-    ("1", "Je lui montre sur un vrai cas",
-     "Pendant la présentation, il voit une demande arriver, sa fiche apparaître et l'alerte "
-     "tomber sur son téléphone. Deux minutes, sans jargon."),
-    ("2", "Je lui fais essayer lui-même",
-     "Dix minutes sur son téléphone, avec une demande d'exemple : il rappelle le client "
-     "et change son état. Je reste à côté."),
-    ("3", "Je ne lui demande qu'un seul geste",
-     "Tout le reste est automatique. Lui indique seulement où en est le client après chaque appel "
-     "(appelé, devis, gagné, perdu)."),
-    ("4", "L'outil vient à lui",
-     "Chaque demande lui arrive par email, prête à rappeler. Une liste « à rappeler aujourd'hui » "
-     "l'attend sur son téléphone."),
-    ("5", "J'écoute ses remarques et je corrige vite",
-     "À une semaine, je lui demande ce qui le gêne et j'ajuste l'outil (une information en plus dans "
-     "l'alerte, par exemple). Il devient le sien."),
-    ("6", "Je lui montre ses résultats",
-     "À trois semaines, je lui présente ses chiffres : clients rappelés, délais, devis obtenus. "
-     "Voir son travail progresser donne envie de continuer."),
+benefits = [
+    ("Il gagne du temps",
+     "Plus besoin de recopier les demandes : tout est déjà rempli dans le tableau. "
+     "Estimation : environ 5 minutes gagnées par demande, soit près d'une heure par semaine pour deux demandes par jour."),
+    ("Il n'oublie plus personne",
+     "Chaque nouvelle demande lui arrive par email. Une liste « à rappeler aujourd'hui » l'attend sur son téléphone, "
+     "même quand il est sur un chantier."),
+    ("Il rappelle mieux",
+     "Avant d'appeler, il a sous les yeux le nom, le téléphone, les travaux et le budget du client. "
+     "Si le client a déjà écrit, il retrouve sa fiche : pas d'appel en double."),
+    ("Un seul geste à faire",
+     "Après son appel, il indique où en est le client (appelé, devis envoyé, gagné, perdu). "
+     "Tout le reste est automatique."),
 ]
+bcol = (W - LM - RM - 4 * mm) / 2
 
-gain_items = [
-    ("Plus aucun client oublié", "Chaque demande est classée et rappelée à sa date."),
-    ("Moins de saisie", "Les informations du client sont déjà remplies : nom, téléphone, travaux, budget."),
-    ("Son travail devient visible", "L'historique de chaque client est au même endroit, utile pour les devis et pour la direction."),
-]
-gcol = (W - LM - RM) / 3
-gcells = [[Paragraph(a, card_t), Paragraph(b, card_b)] for a, b in gain_items]
-gains = Table([[gcells[0], gcells[1], gcells[2]]], colWidths=[gcol] * 3)
-gains.setStyle(TableStyle([
-    ("BACKGROUND", (0, 0), (-1, -1), PEACH),
-    ("LINEBEFORE", (0, 0), (0, 0), 2.2, CORAL), ("LINEBEFORE", (1, 0), (2, 0), 0.6, colors.white),
-    ("VALIGN", (0, 0), (-1, -1), "TOP"),
-    ("LEFTPADDING", (0, 0), (-1, -1), 3.5 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 3 * mm),
-    ("TOPPADDING", (0, 0), (-1, -1), 2.4 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.6 * mm),
-]))
 
-col_w = (W - LM - RM - 6 * mm) / 2
-cells = [step_card(n, t, x, col_w) for n, t, x in steps]
-grid = Table([[cells[0], cells[1]], [cells[2], cells[3]], [cells[4], cells[5]]],
-             colWidths=[col_w + 3 * mm, col_w + 3 * mm])
+def benefit(head, text):
+    return [Paragraph(head, card_t), Spacer(1, 1.5), Paragraph(text, card_b)]
+
+
+grid = Table([[benefit(*benefits[0]), benefit(*benefits[1])], [benefit(*benefits[2]), benefit(*benefits[3])]],
+             colWidths=[bcol + 2 * mm, bcol + 2 * mm])
 grid.setStyle(TableStyle([
     ("VALIGN", (0, 0), (-1, -1), "TOP"),
     ("BACKGROUND", (0, 0), (-1, -1), SAGE),
-    ("LINEBELOW", (0, 0), (-1, 1), 3, colors.white),
-    ("LINEAFTER", (0, 0), (0, -1), 3, colors.white),
-    ("LEFTPADDING", (0, 0), (-1, -1), 4 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 2 * mm),
-    ("TOPPADDING", (0, 0), (-1, -1), 2.3 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.3 * mm),
+    ("LINEBEFORE", (0, 0), (0, -1), 2.4, CORAL), ("LINEBEFORE", (1, 0), (1, -1), 2.4, CORAL),
+    ("LINEBELOW", (0, 0), (-1, 0), 3, colors.white), ("LINEAFTER", (0, 0), (0, -1), 3, colors.white),
+    ("LEFTPADDING", (0, 0), (-1, -1), 4 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 3.5 * mm),
+    ("TOPPADDING", (0, 0), (-1, -1), 3 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 3 * mm),
 ]))
+
+how = Table([[Paragraph(
+    "<b>Comment je m'y prends :</b> je lui montre l'outil sur une vraie demande (deux minutes), il l'essaie lui-même "
+    "sur son téléphone (dix minutes), puis je reviens le voir au bout d'une semaine et de trois semaines "
+    "pour corriger ce qui le gêne. Un outil qu'il aide à améliorer est un outil qu'il garde.", body)]],
+    colWidths=[W - LM - RM])
+how.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), PEACH),
+                         ("LINEBEFORE", (0, 0), (0, -1), 2.4, CORAL),
+                         ("LEFTPADDING", (0, 0), (-1, -1), 4 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 4 * mm),
+                         ("TOPPADDING", (0, 0), (-1, -1), 2.8 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.8 * mm)]))
 
 rows = [
     ["Ce que je veux savoir", "Comment je le vois", "Objectif"],
     ["Aucune demande n'est perdue ?",
-     "Je compare les clients du tableau aux demandes reçues sur Habitat Presto.", "100 %"],
+     "Je compare les demandes reçues d'Habitat Presto aux fiches du tableau.", "Toutes"],
     ["Les clients sont rappelés vite ?",
-     "Le tableau note l'heure à laquelle il change l'état d'un client : j'en déduis le délai avant le premier appel.", "Moins de 24 h ouvrées"],
-    ["Y a-t-il des oublis ?",
-     "Je compte les clients encore « nouveaux » après leur date de rappel.", "Zéro"],
-    ["Les fiches incomplètes sont corrigées ?",
-     "Je regarde combien de fiches « à compléter » sont terminées sous 48 heures.", "100 %"],
+     "Je regarde le temps entre l'arrivée de la demande et le premier appel.", "Moins d'un jour ouvré"],
     ["Le conducteur s'en sert vraiment ?",
-     "Je compte la part des clients dont il met lui-même l'état à jour.", "Plus de 90 % à trois semaines"],
+     "Je compte les clients dont il met lui-même le suivi à jour.", "Plus de 9 sur 10 après trois semaines"],
+    ["Cela rapporte ?",
+     "Je compte les devis et les ventes issus de ces demandes, mois après mois.", "En hausse"],
 ]
 tdata = []
 for i, r in enumerate(rows):
@@ -160,46 +150,42 @@ for i, r in enumerate(rows):
         tdata.append([Paragraph(c, th) for c in r])
     else:
         tdata.append([Paragraph(r[0], tdb), Paragraph(r[1], td), Paragraph(r[2], tdc)])
-t = Table(tdata, colWidths=[44 * mm, 90 * mm, W - LM - RM - 134 * mm], repeatRows=1)
+t = Table(tdata, colWidths=[56 * mm, 76 * mm, W - LM - RM - 132 * mm], repeatRows=1)
 t.setStyle(TableStyle([
     ("BACKGROUND", (0, 0), (-1, 0), GREEN),
     ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, SAGE]),
     ("LINEBELOW", (0, 0), (-1, -1), 0.4, LINE),
     ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
     ("LEFTPADDING", (0, 0), (-1, -1), 3 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 2.5 * mm),
-    ("TOPPADDING", (0, 0), (-1, -1), 1.5 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 1.5 * mm),
+    ("TOPPADDING", (0, 0), (-1, -1), 2.2 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.2 * mm),
 ]))
-
-rhythm = Table([[Paragraph(
-    "<b>Mon rythme :</b> dix minutes par semaine pour lire ces chiffres dans le tableau. "
-    "Si l'un baisse, j'en parle d'abord avec le conducteur avant de changer quoi que ce soit.", body)]],
-    colWidths=[W - LM - RM])
-rhythm.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), PEACH),
-                            ("LINEBEFORE", (0, 0), (0, -1), 2.2, CORAL),
-                            ("LEFTPADDING", (0, 0), (-1, -1), 4 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 4 * mm),
-                            ("TOPPADDING", (0, 0), (-1, -1), 2.6 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.6 * mm)]))
 
 story = [
     Paragraph("SUIVI DES DEMANDES HABITAT PRESTO", kicker),
     Spacer(1, 1.5),
-    Paragraph("Faire adopter l'outil par le conducteur de travaux, et mesurer qu'il fonctionne", title),
+    Paragraph("Adoption et mesure du suivi des leads", title),
     Spacer(1, 4),
     Paragraph(
-        "<b>L'outil en une phrase :</b> chaque demande reçue d'Habitat Presto est rangée automatiquement dans un tableau "
-        "de suivi, et le conducteur de travaux en est prévenu par email. Si une demande est incomplète, elle est "
-        "gardée quand même, marquée « à compléter » : <b>aucun client n'est perdu</b>.", lead),
-    Paragraph("1. Ce que le conducteur de travaux y gagne", h),
-    gains,
-    Paragraph("2. Comment je l'accompagne après la présentation", h),
-    grid,
-    Paragraph("3. Comment je mesure que ça marche", h),
-    t,
+        "Chaque demande reçue d'Habitat Presto est rangée automatiquement dans un tableau de suivi, et notre conducteur "
+        "de travaux en est prévenu par email. Même incomplète, une demande est gardée : <b>aucun client n'est perdu</b>.",
+        lead),
+    Paragraph("1. Comment je ferais adopter ce suivi par notre conducteur de travaux", h),
+    Paragraph("Je ne lui demande pas de changer ses habitudes. Je lui montre ce que l'outil lui enlève comme travail.", body),
     Spacer(1, 3),
-    rhythm,
-    Spacer(1, 2),
+    grid,
+    Spacer(1, 4),
+    how,
+    Paragraph("2. Comment je mesurerais que ça marche", h),
+    t,
+    Spacer(1, 4),
+    Paragraph(
+        "<b>Mon rythme :</b> dix minutes par semaine pour lire ces chiffres dans le tableau. "
+        "Si l'un d'eux baisse, j'en parle d'abord avec le conducteur avant de changer quoi que ce soit.", body),
+    Spacer(1, 5),
     Paragraph(
         "<b>À savoir :</b> l'outil a été testé avec des demandes fictives. Pour une vraie mise en service, il faudra "
-        "une adresse email dédiée aux demandes et le vrai destinataire des alertes.", small),
+        "une adresse email dédiée aux demandes et le vrai destinataire des alertes. Le gain de temps est une estimation, "
+        "à confirmer avec le conducteur.", small),
 ]
 
 doc = BaseDocTemplate(os.path.join(HERE, "Note_Adoption_Mesure_Cedric_Kouadio.pdf"), pagesize=A4,
