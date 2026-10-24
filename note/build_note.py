@@ -92,25 +92,41 @@ def step_card(num, head, text, w):
 
 
 steps = [
-    ("1", "Commencer par l'écouter",
-     "Une demi-heure avec lui, sur place ou en visio, pour voir comment il reçoit et rappelle ses clients aujourd'hui. "
-     "Souvent depuis un chantier, avec son téléphone."),
-    ("2", "Ne lui demander qu'un seul geste",
-     "Tout le reste est automatique. Lui indique seulement où en est le client après chaque appel : "
-     "appelé, rendez-vous pris, devis envoyé, gagné ou perdu."),
-    ("3", "Aller là où il est déjà",
-     "Chaque nouvelle demande lui arrive par email, avec de quoi rappeler le client sans rien ouvrir d'autre. "
-     "Une liste « à rappeler aujourd'hui » se consulte sur son téléphone."),
-    ("4", "Le former en dix minutes",
-     "Une fiche d'une page et une courte vidéo de deux minutes qu'il garde sous la main. "
-     "Rien de plus à apprendre."),
-    ("5", "Rester présent les premières semaines",
-     "Je repasse le voir à une semaine, puis à trois semaines : s'en sert-il encore ? qu'est-ce qui le gêne ? "
-     "J'ajuste : un outil délaissé est un outil à corriger."),
-    ("6", "Lui montrer ce qu'il y gagne",
-     "Plus aucune demande oubliée, des rappels prêts à passer, et l'historique de chaque client "
-     "au même endroit."),
+    ("1", "Je lui montre sur un vrai cas",
+     "Pendant la présentation, il voit une demande arriver, sa fiche apparaître et l'alerte "
+     "tomber sur son téléphone. Deux minutes, sans jargon."),
+    ("2", "Je lui fais essayer lui-même",
+     "Dix minutes sur son téléphone, avec une demande d'exemple : il rappelle le client "
+     "et change son état. Je reste à côté."),
+    ("3", "Je ne lui demande qu'un seul geste",
+     "Tout le reste est automatique. Lui indique seulement où en est le client après chaque appel "
+     "(appelé, devis, gagné, perdu)."),
+    ("4", "L'outil vient à lui",
+     "Chaque demande lui arrive par email, prête à rappeler. Une liste « à rappeler aujourd'hui » "
+     "l'attend sur son téléphone."),
+    ("5", "J'écoute ses remarques et je corrige vite",
+     "À une semaine, je lui demande ce qui le gêne et j'ajuste l'outil (une information en plus dans "
+     "l'alerte, par exemple). Il devient le sien."),
+    ("6", "Je lui montre ses résultats",
+     "À trois semaines, je lui présente ses chiffres : clients rappelés, délais, devis obtenus. "
+     "Voir son travail progresser donne envie de continuer."),
 ]
+
+gain_items = [
+    ("Plus aucun client oublié", "Chaque demande est classée et rappelée à sa date."),
+    ("Moins de saisie", "Les informations du client sont déjà remplies : nom, téléphone, travaux, budget."),
+    ("Son travail devient visible", "L'historique de chaque client est au même endroit, utile pour les devis et pour la direction."),
+]
+gcol = (W - LM - RM) / 3
+gcells = [[Paragraph(a, card_t), Paragraph(b, card_b)] for a, b in gain_items]
+gains = Table([[gcells[0], gcells[1], gcells[2]]], colWidths=[gcol] * 3)
+gains.setStyle(TableStyle([
+    ("BACKGROUND", (0, 0), (-1, -1), PEACH),
+    ("LINEBEFORE", (0, 0), (0, 0), 2.2, CORAL), ("LINEBEFORE", (1, 0), (2, 0), 0.6, colors.white),
+    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+    ("LEFTPADDING", (0, 0), (-1, -1), 3.5 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 3 * mm),
+    ("TOPPADDING", (0, 0), (-1, -1), 2.4 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.6 * mm),
+]))
 
 col_w = (W - LM - RM - 6 * mm) / 2
 cells = [step_card(n, t, x, col_w) for n, t, x in steps]
@@ -130,17 +146,13 @@ rows = [
     ["Aucune demande n'est perdue ?",
      "Je compare les clients du tableau aux demandes reçues sur Habitat Presto.", "100 %"],
     ["Les clients sont rappelés vite ?",
-     "Le tableau note tout seul l'heure à laquelle le conducteur change l'état d'un client. "
-     "J'en déduis le délai avant le premier appel.", "Moins de 24 h ouvrées"],
+     "Le tableau note l'heure à laquelle il change l'état d'un client : j'en déduis le délai avant le premier appel.", "Moins de 24 h ouvrées"],
     ["Y a-t-il des oublis ?",
      "Je compte les clients encore « nouveaux » après leur date de rappel.", "Zéro"],
     ["Les fiches incomplètes sont corrigées ?",
      "Je regarde combien de fiches « à compléter » sont terminées sous 48 heures.", "100 %"],
     ["Le conducteur s'en sert vraiment ?",
      "Je compte la part des clients dont il met lui-même l'état à jour.", "Plus de 90 % à trois semaines"],
-    ["Cela rapporte ?",
-     "Je suis, mois après mois, le chemin d'une demande jusqu'à la vente : appel, rendez-vous, devis, signature.",
-     "En progression"],
 ]
 tdata = []
 for i, r in enumerate(rows):
@@ -159,8 +171,8 @@ t.setStyle(TableStyle([
 ]))
 
 rhythm = Table([[Paragraph(
-    "<b>Mon rythme de suivi :</b> dix minutes chaque semaine pour lire ces chiffres, directement dans le tableau. "
-    "Si l'un d'eux baisse, j'en parle d'abord avec le conducteur avant de changer quoi que ce soit.", body)]],
+    "<b>Mon rythme :</b> dix minutes par semaine pour lire ces chiffres dans le tableau. "
+    "Si l'un baisse, j'en parle d'abord avec le conducteur avant de changer quoi que ce soit.", body)]],
     colWidths=[W - LM - RM])
 rhythm.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), PEACH),
                             ("LINEBEFORE", (0, 0), (0, -1), 2.2, CORAL),
@@ -175,19 +187,19 @@ story = [
     Paragraph(
         "<b>L'outil en une phrase :</b> chaque demande reçue d'Habitat Presto est rangée automatiquement dans un tableau "
         "de suivi, et le conducteur de travaux en est prévenu par email. Si une demande est incomplète, elle est "
-        "gardée quand même, marquée « à compléter » : <b>aucun client n'est perdu</b>. "
-        "Un client qui écrit une seconde fois retrouve sa fiche au lieu d'en créer une nouvelle.", lead),
-    Paragraph("1. Comment je fais adopter l'outil", h),
+        "gardée quand même, marquée « à compléter » : <b>aucun client n'est perdu</b>.", lead),
+    Paragraph("1. Ce que le conducteur de travaux y gagne", h),
+    gains,
+    Paragraph("2. Comment je l'accompagne après la présentation", h),
     grid,
-    Paragraph("2. Comment je mesure que ça marche", h),
+    Paragraph("3. Comment je mesure que ça marche", h),
     t,
-    Spacer(1, 4),
+    Spacer(1, 3),
     rhythm,
-    Spacer(1, 4),
+    Spacer(1, 2),
     Paragraph(
-        "<b>À savoir :</b> l'outil a été testé avec des demandes fictives. Pour une vraie mise en service, il faudra une "
-        "adresse email dédiée aux demandes et le vrai destinataire des alertes. Aujourd'hui, une demande non saisie "
-        "à la main n'existe nulle part : chaque client suivi est donc un gain mesurable dès la première semaine.", small),
+        "<b>À savoir :</b> l'outil a été testé avec des demandes fictives. Pour une vraie mise en service, il faudra "
+        "une adresse email dédiée aux demandes et le vrai destinataire des alertes.", small),
 ]
 
 doc = BaseDocTemplate(os.path.join(HERE, "Note_Adoption_Mesure_Cedric_Kouadio.pdf"), pagesize=A4,

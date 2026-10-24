@@ -63,7 +63,7 @@ Cas pratique réalisé pour une candidature en alternance « IA Builder » chez 
 | Extraire nom, téléphone, email, ville, type de travaux, budget, délai avec une IA | Claude Haiku, 8 champs, température 0, consigne « n'invente rien » | nœud « Extraction IA » |
 | Créer une ligne dans un tableau de suivi | Airtable, 16 champs | [section 5](#5-le-tableau-de-suivi) |
 | Gérer au moins un cas d'erreur (incomplet, doublon) | Les deux, plus la panne de l'IA et les mails hors sujet ignorés | [section 6](#6-cas-testés) |
-| Une note d'une page : adoption par le conducteur et mesure | Note de 6 actions d'adoption et 6 indicateurs | [note](note/Note_Adoption_Mesure_Cedric_Kouadio.pdf) |
+| Une note d'une page : adoption par le conducteur et mesure | Note d'une page : ce que le conducteur y gagne, 6 étapes d'accompagnement et 5 indicateurs | [note](note/Note_Adoption_Mesure_Cedric_Kouadio.pdf) |
 | Captures ou export du workflow | Export JSON sans secret, 9 captures | [workflow](workflow), [captures](captures) |
 | Une vidéo de 3 minutes maximum | Script minute par minute | [script](video/script_video_et_mail.txt) |
 
