@@ -126,6 +126,8 @@ Principes suivis :
 
 Table Airtable `Leads`, 16 champs : Nom, Telephone, Email, Ville, Type de travaux, Budget min, Budget max, Delai, Statut (Nouveau, À compléter, Appelé, RDV pris, Devis envoyé, Gagné, Perdu), Responsable, Date reception, Date de relance, Commentaire, Nb contacts, Source, et Statut modifie le (rempli automatiquement à chaque changement de statut).
 
+Toutes les dates s'affichent au format français JJ/MM/AAAA, dans le tableau comme dans les alertes.
+
 Une vue **« À rappeler aujourd'hui »** liste les relances du jour ou en retard, hors leads gagnés ou perdus : c'est la vue que le conducteur consulte sur son téléphone.
 
 ![Date de relance et commentaire : le doublon de Claire a mis sa fiche à jour](captures/09_airtable_relance_commentaire.jpg)
@@ -155,7 +157,7 @@ Plus de 20 exécutions, dont 7 par le vrai déclencheur Gmail. Chaque lead est t
 
 ![Alerte pour un doublon](captures/05_alerte_doublon.jpg)
 
-![Alerte pour un mail bruité, entièrement extrait](captures/06_alerte_nouveau_lead_mail_bruite.jpg)
+![Alerte pour un nouveau lead complet](captures/06_alerte_nouveau_lead.jpg)
 
 **Un défaut trouvé en testant :** après une longue inactivité, la connexion à la boîte mail pouvait se couper et un lead était manqué. Une reconnexion automatique toutes les 5 minutes (`forceReconnect`) a corrigé le problème, vérifié ensuite par un lead de test.
 
