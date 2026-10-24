@@ -83,6 +83,8 @@ s += [t, Spacer(1, 3),
           "Le doublon repose sur l'email et sur les neuf derniers chiffres du téléphone (numéros français).",
           "Données personnelles : accès au tableau réservé au conducteur et à la direction, clés stockées dans n8n, "
           "aucune donnée réelle utilisée pour ce test.",
+          "Dates et heures : format français JJ/MM/AAAA et heures sur 24 h, fuseau Europe/Paris fixé dans n8n et dans Airtable. "
+          "Le passage à l'heure d'hiver (nuit du 24 au 25 octobre 2026) est sans effet : les relances sont comptées en jours calendaires.",
           "Coût : modèle Claude Haiku, le plus économique, avec une température à zéro pour des réponses stables.",
           "Workflow construit uniquement avec des nœuds n8n, sans nœud de code : quelques formules simples suffisent, il peut être relu et modifié par quelqu'un qui n'est pas développeur.",
       ])]

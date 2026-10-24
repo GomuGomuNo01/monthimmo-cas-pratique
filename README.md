@@ -126,7 +126,9 @@ Principes suivis :
 
 Table Airtable `Leads`, 16 champs : Nom, Telephone, Email, Ville, Type de travaux, Budget min, Budget max, Delai, Statut (Nouveau, À compléter, Appelé, RDV pris, Devis envoyé, Gagné, Perdu), Responsable, Date reception, Date de relance, Commentaire, Nb contacts, Source, et Statut modifie le (rempli automatiquement à chaque changement de statut).
 
-Toutes les dates s'affichent au format français JJ/MM/AAAA, dans le tableau comme dans les alertes.
+Toutes les dates s'affichent au format français JJ/MM/AAAA, dans le tableau comme dans les alertes, et les heures sur 24 h en heure de Paris (fuseau fixé sur `Europe/Paris` dans Airtable et dans les paramètres du workflow).
+
+![Le champ « Statut modifie le », en heure de Paris sur 24 h](captures/10_airtable_statut_modifie_heure_paris.jpg)
 
 Une vue **« À rappeler aujourd'hui »** liste les relances du jour ou en retard, hors leads gagnés ou perdus : c'est la vue que le conducteur consulte sur son téléphone.
 
@@ -202,6 +204,7 @@ Ce workflow est une démonstration, pas un outil en production. Pour qu'un condu
 Limites connues :
 
 - la comparaison du téléphone est prévue pour des **numéros français** ;
+- le **changement d'heure** (passage à l'heure d'hiver, nuit du 24 au 25 octobre 2026) est sans effet : le fuseau `Europe/Paris` est fixé partout, et les dates de relance sont calculées en jours calendaires (une relance à +2 jours tombe le même jour local, 23 h 30 comprises, vérifié avec la bibliothèque de dates de n8n) ;
 - le tableau n'est **pas relié** à un outil de gestion existant (Coda, facturation) ;
 - le déclencheur dépend du format « mail non lu avec un objet contenant Habitat Presto » ; un changement d'objet côté plateforme l'empêcherait de partir ;
 - les données sont fictives : le comportement sur de vrais mails (pièces jointes, formats exotiques) n'est pas démontré.
@@ -233,7 +236,7 @@ Pour tester sans Gmail, le formulaire de secours du workflow accepte le texte d'
 │   └── build_note.py                   génération de la note
 ├── video/
 │   └── script_video_et_mail.txt        script de la vidéo de 3 minutes
-└── captures/                           9 captures d'écran réalisées sur ce projet
+└── captures/                           10 captures d'écran réalisées sur ce projet
 ```
 
 ## 12. Sécurité
