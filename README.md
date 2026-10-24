@@ -258,6 +258,6 @@ Pour tester sans Gmail, le formulaire de secours du workflow accepte le texte d'
 
 ## Auteur
 
-**Cédric Kouadio**, étudiant en Master IA et Big Data à l'ESGI, en recherche d'alternance. Ce cas pratique a été construit avec l'aide d'un assistant IA (Claude), pour le cadrage comme pour les tests ; le choix des outils, les règles métier et la vérification de chaque résultat sont de mon fait.
+**Cédric Kouadio**, étudiant en Master IA et Big Data à l'ESGI.
 
 [GitHub](https://github.com/GomuGomuNo01)
