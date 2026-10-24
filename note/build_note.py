@@ -133,31 +133,40 @@ how.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), PEACH),
                          ("LEFTPADDING", (0, 0), (-1, -1), 4 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 4 * mm),
                          ("TOPPADDING", (0, 0), (-1, -1), 2.8 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.8 * mm)]))
 
-rows = [
-    ["Ce que je veux savoir", "Comment je le vois", "Objectif"],
-    ["Aucune demande n'est perdue ?",
-     "Je compare les demandes reçues d'Habitat Presto aux fiches du tableau.", "Toutes"],
-    ["Les clients sont rappelés vite ?",
-     "Je regarde le temps entre l'arrivée de la demande et le premier appel.", "Moins d'un jour ouvré"],
-    ["Le conducteur s'en sert vraiment ?",
-     "Je compte les clients dont il met lui-même le suivi à jour.", "Plus de 9 sur 10 après trois semaines"],
-    ["Cela rapporte ?",
-     "Je compte les devis et les ventes issus de ces demandes, mois après mois.", "En hausse"],
+checks = [
+    ("Aucun client n'est oublié",
+     "Je compte les demandes reçues d'Habitat Presto et je vérifie qu'il y a une fiche pour chacune.",
+     "chaque demande a sa fiche."),
+    ("Les clients sont rappelés rapidement",
+     "Je regarde combien de temps passe entre l'arrivée d'une demande et le premier appel du conducteur.",
+     "le client est rappelé en moins d'une journée de travail."),
+    ("Le conducteur utilise l'outil",
+     "Je regarde s'il met lui-même à jour l'avancement de ses clients (appelé, devis envoyé, gagné, perdu).",
+     "il le fait pour presque tous ses clients (9 sur 10) au bout de trois semaines."),
+    ("L'outil rapporte des clients",
+     "Je compte les devis envoyés et les ventes qui viennent de ces demandes.",
+     "ces nombres augmentent de mois en mois."),
 ]
-tdata = []
-for i, r in enumerate(rows):
-    if i == 0:
-        tdata.append([Paragraph(c, th) for c in r])
-    else:
-        tdata.append([Paragraph(r[0], tdb), Paragraph(r[1], td), Paragraph(r[2], tdc)])
-t = Table(tdata, colWidths=[56 * mm, 76 * mm, W - LM - RM - 132 * mm], repeatRows=1)
+check_rows = []
+for n, (head, what, ok) in enumerate(checks, 1):
+    badge = Paragraph('<font color="white"><b>%d</b></font>' % n,
+                      ParagraphStyle("nb", fontName="Man-ExtraBold", fontSize=10, leading=12, alignment=1))
+    bt = Table([[badge]], colWidths=[7 * mm], rowHeights=[7 * mm])
+    bt.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, -1), GREEN), ("ROUNDEDCORNERS", [3.5 * mm] * 4),
+                            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                            ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0),
+                            ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+    check_rows.append([bt, [Paragraph(head, card_t), Spacer(1, 1.5), Paragraph(what, card_b),
+                            Spacer(1, 1.5),
+                            Paragraph("<font color='#EE7766'><b>C'est réussi si :</b></font> " + ok, card_b)]])
+t = Table(check_rows, colWidths=[13 * mm, W - LM - RM - 13 * mm])
 t.setStyle(TableStyle([
-    ("BACKGROUND", (0, 0), (-1, 0), GREEN),
-    ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, SAGE]),
+    ("ROWBACKGROUNDS", (0, 0), (-1, -1), [SAGE, colors.white]),
+    ("VALIGN", (0, 0), (-1, -1), "TOP"),
     ("LINEBELOW", (0, 0), (-1, -1), 0.4, LINE),
-    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-    ("LEFTPADDING", (0, 0), (-1, -1), 3 * mm), ("RIGHTPADDING", (0, 0), (-1, -1), 2.5 * mm),
-    ("TOPPADDING", (0, 0), (-1, -1), 2.2 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.2 * mm),
+    ("LEFTPADDING", (0, 0), (0, -1), 3.5 * mm), ("RIGHTPADDING", (0, 0), (0, -1), 0),
+    ("LEFTPADDING", (1, 0), (1, -1), 1 * mm), ("RIGHTPADDING", (1, 0), (1, -1), 4 * mm),
+    ("TOPPADDING", (0, 0), (-1, -1), 2.6 * mm), ("BOTTOMPADDING", (0, 0), (-1, -1), 2.6 * mm),
 ]))
 
 story = [
@@ -176,6 +185,8 @@ story = [
     Spacer(1, 4),
     how,
     Paragraph("2. Comment je mesurerais que ça marche", h),
+    Paragraph("Chaque semaine, je vérifie quatre choses simples dans le tableau de suivi.", body),
+    Spacer(1, 3),
     t,
     Spacer(1, 4),
     Paragraph(
