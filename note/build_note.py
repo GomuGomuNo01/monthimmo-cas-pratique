@@ -32,7 +32,7 @@ s = [
     Paragraph("Suivi des leads Habitat Presto : adoption et mesure", title),
     Paragraph("Cédric Kouadio, cas pratique alternance AI Builder, Month'immo, 24 octobre 2026", sub),
     Spacer(1, 4),
-    Paragraph("<b>Ce que fait l'outil.</b> Chaque mail de lead est lu par l'IA, qui en extrait le nom, le téléphone, "
+    Paragraph("<b>Ce que fait l'outil.</b> Chaque mail de lead arrivé dans la boîte Gmail dédiée est lu par n8n, puis par l'IA, qui en extrait le nom, le téléphone, "
               "l'email, la ville, les travaux, le budget et le délai. Le lead est rangé dans le tableau de suivi Airtable, "
               "un client déjà connu met à jour sa fiche au lieu d'en créer une seconde, et le conducteur de travaux reçoit "
               "une alerte par email. Si une information manque ou si l'IA ne répond pas, la ligne est créée en "
@@ -44,8 +44,8 @@ s = [
         "rappelle les leads aujourd'hui : souvent sur un chantier, avec son téléphone.",
         "<b>Ne lui demander qu'un seul geste.</b> Tout est rempli automatiquement ; lui change seulement le statut après "
         "chaque appel (Appelé, RDV pris, Devis envoyé, Gagné, Perdu).",
-        "<b>Passer par ses outils.</b> L'alerte email contient de quoi rappeler le client sans ouvrir le tableau. Une vue "
-        "Airtable « À rappeler aujourd'hui », filtrée sur la date de relance, se consulte sur l'application mobile.",
+        "<b>Passer par ses outils.</b> L'alerte email contient de quoi rappeler le client sans ouvrir le tableau. La vue "
+        "Airtable « À rappeler aujourd'hui » (relances du jour ou en retard, hors leads gagnés ou perdus) est déjà en place et se consulte sur l'application mobile.",
         "<b>Former en dix minutes</b>, avec une fiche d'une page et une vidéo de deux minutes à garder sous la main.",
         "<b>Revenir le voir à une semaine, puis à trois semaines</b> : vérifier qu'il s'en sert encore, noter ce qui le "
         "gêne et ajuster les statuts, les colonnes ou l'alerte. Un outil qui n'est plus utilisé est un outil à corriger.",
@@ -58,7 +58,7 @@ s = [
 rows = [
     ["Indicateur", "Comment le mesurer", "Objectif"],
     ["Taux de capture", "Leads dans le tableau, comparés aux leads reçus sur Habitat Presto", "100 %"],
-    ["Rapidité du premier appel", "Écart entre la date de réception et le passage au statut « Appelé » (champ de date de modification du statut)", "Moins de 24 h ouvrées"],
+    ["Rapidité du premier appel", "Écart entre la date de réception et le passage au statut « Appelé » (champ « Statut modifie le », rempli automatiquement à chaque changement de statut)", "Moins de 24 h ouvrées"],
     ["Leads en retard", "Leads encore « Nouveau » après leur date de relance", "0"],
     ["Fiches à compléter", "Lignes « À compléter » corrigées sous 48 h", "100 %"],
     ["Usage réel par le conducteur", "Part des leads dont il a lui-même changé le statut", "Plus de 90 % à trois semaines"],
@@ -78,13 +78,13 @@ s += [t, Spacer(1, 3),
 
       Paragraph("3. Limites et suite", h),
       *bullets([
-          "Le formulaire sert à la démonstration. En production, il se remplace par un déclencheur Gmail ou IMAP sur "
-          "l'adresse qui reçoit les leads : un seul nœud à changer.",
+          "Deux entrées possibles : la boîte Gmail (déclencheur IMAP sur les mails « Habitat Presto » non lus) et un "
+          "formulaire de secours pour coller un lead à la main. En production, une adresse dédiée aux leads est préférable.",
           "Le doublon repose sur l'email et sur les neuf derniers chiffres du téléphone (numéros français).",
           "Données personnelles : accès au tableau réservé au conducteur et à la direction, clés stockées dans n8n, "
           "aucune donnée réelle utilisée pour ce test.",
           "Coût : modèle Claude Haiku, le plus économique, avec une température à zéro pour des réponses stables.",
-          "Workflow 100 % n8n, sans code personnalisé : il peut être relu et modifié par quelqu'un qui n'est pas développeur.",
+          "Workflow construit uniquement avec des nœuds n8n, sans nœud de code : quelques formules simples suffisent, il peut être relu et modifié par quelqu'un qui n'est pas développeur.",
       ])]
 
 doc = SimpleDocTemplate("Note_Adoption_Mesure_Cedric_Kouadio.pdf", pagesize=A4, leftMargin=20 * mm,
