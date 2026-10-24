@@ -1,6 +1,6 @@
 [
   {
-    "updatedAt": "2026-10-23T22:38:42.683Z",
+    "updatedAt": "2026-10-24T07:57:26.983Z",
     "createdAt": "2026-10-23T22:38:37.703Z",
     "id": "r84CIuaweIwmDxmx",
     "name": "Leads Habitat Presto vers tableau de suivi",
@@ -21,12 +21,12 @@
         "typeVersion": 1,
         "position": [
           -560,
-          -300
+          -304
         ]
       },
       {
         "parameters": {
-          "content": "## 2. Extraction par l'IA\nClaude Haiku extrait nom, téléphone, email, ville, travaux, budget et délai. Température 0, rien n'est inventé. Deux essais, puis sortie d'erreur.",
+          "content": "## 2. Extraction par l'IA\nClaude Haiku extrait nom, téléphone, email, ville, travaux, budget et délai. Rien n'est inventé. Deux essais, puis sortie d'erreur.",
           "height": 560,
           "width": 440,
           "color": 5
@@ -992,9 +992,6 @@
       },
       {
         "parameters": {
-          "mailbox": "INBOX",
-          "postProcessAction": "read",
-          "format": "simple",
           "options": {
             "customEmailConfig": "[\"UNSEEN\", [\"SUBJECT\", \"Habitat Presto\"]]",
             "forceReconnect": 5
@@ -1017,7 +1014,6 @@
       },
       {
         "parameters": {
-          "mode": "manual",
           "assignments": {
             "assignments": [
               {
@@ -1196,9 +1192,9 @@
     "meta": null,
     "nodeGroups": [],
     "pinData": {},
-    "versionId": "2411918c-13e1-479b-ae2d-c3390dd22fc9",
-    "activeVersionId": "2411918c-13e1-479b-ae2d-c3390dd22fc9",
-    "versionCounter": 3,
+    "versionId": "c885df18-41fb-4348-9bc6-ce7a95186ff9",
+    "activeVersionId": "c885df18-41fb-4348-9bc6-ce7a95186ff9",
+    "versionCounter": 5,
     "triggerCount": 2,
     "sourceWorkflowId": null,
     "tags": [],
@@ -1223,7 +1219,7 @@
       }
     ],
     "versionMetadata": {
-      "name": "Version finale validee",
+      "name": "Version c885df18",
       "description": ""
     }
   }
