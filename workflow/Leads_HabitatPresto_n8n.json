@@ -10,7 +10,7 @@
     "nodes": [
       {
         "parameters": {
-          "content": "## 1. Réception du lead\nLes mails Habitat Presto non lus arrivent par Gmail (IMAP). Formulaire de secours pour coller un lead à la main.",
+          "content": "## 1. Réception du lead\nLes mails Habitat Presto non lus arrivent par Gmail (IMAP). Formulaire de secours pour coller un lead à la main. Les demandes sont traitées une par une.",
           "height": 520,
           "width": 300,
           "color": 7
@@ -488,20 +488,20 @@
           "columns": {
             "mappingMode": "defineBelow",
             "value": {
-              "Nom": "={{ $('Préparer le lead').first().json['Nom'] }}",
-              "Telephone": "={{ $('Préparer le lead').first().json['Telephone'] }}",
-              "Email": "={{ $('Préparer le lead').first().json['Email'] }}",
-              "Ville": "={{ $('Préparer le lead').first().json['Ville'] }}",
-              "Type de travaux": "={{ $('Préparer le lead').first().json['Type de travaux'] }}",
-              "Delai": "={{ $('Préparer le lead').first().json['Delai'] }}",
-              "Statut": "={{ $('Préparer le lead').first().json['Statut'] }}",
-              "Responsable": "={{ $('Préparer le lead').first().json['Responsable'] }}",
-              "Date reception": "={{ $('Préparer le lead').first().json['Date reception'] }}",
-              "Date de relance": "={{ $('Préparer le lead').first().json['Date de relance'] }}",
-              "Commentaire": "={{ $('Préparer le lead').first().json['Commentaire'] }}",
-              "Source": "={{ $('Préparer le lead').first().json['Source'] }}",
-              "Budget min": "={{ $('Préparer le lead').first().json['Budget min'] }}",
-              "Budget max": "={{ $('Préparer le lead').first().json['Budget max'] }}",
+              "Nom": "={{ $('Préparer le lead').item.json['Nom'] }}",
+              "Telephone": "={{ $('Préparer le lead').item.json['Telephone'] }}",
+              "Email": "={{ $('Préparer le lead').item.json['Email'] }}",
+              "Ville": "={{ $('Préparer le lead').item.json['Ville'] }}",
+              "Type de travaux": "={{ $('Préparer le lead').item.json['Type de travaux'] }}",
+              "Delai": "={{ $('Préparer le lead').item.json['Delai'] }}",
+              "Statut": "={{ $('Préparer le lead').item.json['Statut'] }}",
+              "Responsable": "={{ $('Préparer le lead').item.json['Responsable'] }}",
+              "Date reception": "={{ $('Préparer le lead').item.json['Date reception'] }}",
+              "Date de relance": "={{ $('Préparer le lead').item.json['Date de relance'] }}",
+              "Commentaire": "={{ $('Préparer le lead').item.json['Commentaire'] }}",
+              "Source": "={{ $('Préparer le lead').item.json['Source'] }}",
+              "Budget min": "={{ $('Préparer le lead').item.json['Budget min'] }}",
+              "Budget max": "={{ $('Préparer le lead').item.json['Budget max'] }}",
               "Nb contacts": "={{ 1 }}"
             },
             "matchingColumns": [],
@@ -698,9 +698,9 @@
         "parameters": {
           "fromEmail": "cedrickouadio22@gmail.com",
           "toEmail": "cedrickouadio22@gmail.com",
-          "subject": "={{ '[Doublon] ' + ($('Préparer le lead').first().json.Nom || 'Client') + ' - ' + ($('Préparer le lead').first().json.Ville || 'ville inconnue') }}",
+          "subject": "={{ '[Doublon] ' + ($('Préparer le lead').item.json.Nom || 'Client') + ' - ' + ($('Préparer le lead').item.json.Ville || 'ville inconnue') }}",
           "emailFormat": "text",
-          "text": "={{ 'Bonjour,\\n\\nCe client a déjà une fiche dans le tableau de suivi : aucune nouvelle ligne n\\'a été créée.\\n\\n' + 'Client : ' + ($('Préparer le lead').first().json.Nom || 'non renseigné') + '\\n' + 'Téléphone : ' + ($('Préparer le lead').first().json.Telephone || 'non renseigné') + '\\n' + 'Email : ' + ($('Préparer le lead').first().json.Email || 'non renseigné') + '\\n' + 'Nouvelle demande : ' + ($('Préparer le lead').first().json['Type de travaux'] || 'non précisée') + '\\n\\n' + 'La fiche existante a été mise à jour (commentaire et nombre de contacts). Pensez à rappeler ce client.\\n' }}",
+          "text": "={{ 'Bonjour,\\n\\nCe client a déjà une fiche dans le tableau de suivi : aucune nouvelle ligne n\\'a été créée.\\n\\n' + 'Client : ' + ($('Préparer le lead').item.json.Nom || 'non renseigné') + '\\n' + 'Téléphone : ' + ($('Préparer le lead').item.json.Telephone || 'non renseigné') + '\\n' + 'Email : ' + ($('Préparer le lead').item.json.Email || 'non renseigné') + '\\n' + 'Nouvelle demande : ' + ($('Préparer le lead').item.json['Type de travaux'] || 'non précisée') + '\\n\\n' + 'La fiche existante a été mise à jour (commentaire et nombre de contacts). Pensez à rappeler ce client.\\n' }}",
           "options": {
             "appendAttribution": false
           }
@@ -725,9 +725,9 @@
         "parameters": {
           "fromEmail": "cedrickouadio22@gmail.com",
           "toEmail": "cedrickouadio22@gmail.com",
-          "subject": "={{ '[' + ($('Préparer le lead').first().json.Statut === 'Nouveau' ? 'Nouveau lead' : 'À compléter') + '] ' + ($('Préparer le lead').first().json.Nom || 'Lead sans nom') + ' - ' + ($('Préparer le lead').first().json.Ville || 'ville inconnue') }}",
+          "subject": "={{ '[' + ($('Préparer le lead').item.json.Statut === 'Nouveau' ? 'Nouveau lead' : 'À compléter') + '] ' + ($('Préparer le lead').item.json.Nom || 'Lead sans nom') + ' - ' + ($('Préparer le lead').item.json.Ville || 'ville inconnue') }}",
           "emailFormat": "text",
-          "text": "={{ 'Bonjour,\\n\\nUn nouveau lead Habitat Presto vient d\\'être enregistré dans le tableau de suivi.\\n\\n' + 'Statut : ' + $('Préparer le lead').first().json.Statut + '\\n' + 'Client : ' + ($('Préparer le lead').first().json.Nom || 'non renseigné') + '\\n' + 'Téléphone : ' + ($('Préparer le lead').first().json.Telephone || 'non renseigné') + '\\n' + 'Email : ' + ($('Préparer le lead').first().json.Email || 'non renseigné') + '\\n' + 'Ville : ' + ($('Préparer le lead').first().json.Ville || 'non renseignée') + '\\n' + 'Travaux : ' + ($('Préparer le lead').first().json['Type de travaux'] || 'non renseignés') + '\\n' + 'Budget : ' + ($('Préparer le lead').first().json['Budget min'] ? $('Préparer le lead').first().json['Budget min'].toLocaleString('fr-FR') + ' à ' + $('Préparer le lead').first().json['Budget max'].toLocaleString('fr-FR') + ' €' : 'non précisé') + '\\n' + 'Délai : ' + ($('Préparer le lead').first().json.Delai || 'non précisé') + '\\n\\n' + ($('Préparer le lead').first().json.Statut === 'À compléter' ? 'Attention : ' + $('Préparer le lead').first().json.Commentaire + '\\n\\n' : '') + 'À rappeler au plus tard le ' + $('Préparer le lead').first().json['Date de relance'].split('-').reverse().join('/') + '.\\n' }}",
+          "text": "={{ 'Bonjour,\\n\\nUn nouveau lead Habitat Presto vient d\\'être enregistré dans le tableau de suivi.\\n\\n' + 'Statut : ' + $('Préparer le lead').item.json.Statut + '\\n' + 'Client : ' + ($('Préparer le lead').item.json.Nom || 'non renseigné') + '\\n' + 'Téléphone : ' + ($('Préparer le lead').item.json.Telephone || 'non renseigné') + '\\n' + 'Email : ' + ($('Préparer le lead').item.json.Email || 'non renseigné') + '\\n' + 'Ville : ' + ($('Préparer le lead').item.json.Ville || 'non renseignée') + '\\n' + 'Travaux : ' + ($('Préparer le lead').item.json['Type de travaux'] || 'non renseignés') + '\\n' + 'Budget : ' + ($('Préparer le lead').item.json['Budget min'] ? $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' à ' + $('Préparer le lead').item.json['Budget max'].toLocaleString('fr-FR') + ' €' : 'non précisé') + '\\n' + 'Délai : ' + ($('Préparer le lead').item.json.Delai || 'non précisé') + '\\n\\n' + ($('Préparer le lead').item.json.Statut === 'À compléter' ? 'Attention : ' + $('Préparer le lead').item.json.Commentaire + '\\n\\n' : '') + 'À rappeler au plus tard le ' + $('Préparer le lead').item.json['Date de relance'].split('-').reverse().join('/') + '.\\n' }}",
           "options": {
             "appendAttribution": false
           }
@@ -770,7 +770,7 @@
               "Source": "Habitat Presto",
               "Date reception": "={{ $now.toFormat('yyyy-MM-dd') }}",
               "Date de relance": "={{ $now.plus({ days: 1 }).toFormat('yyyy-MM-dd') }}",
-              "Commentaire": "={{ 'Extraction par IA impossible, lead à saisir à la main. Mail reçu : ' + $('Normaliser le mail').first().json.mail }}",
+              "Commentaire": "={{ 'Extraction par IA impossible, lead à saisir à la main. Mail reçu : ' + $('Normaliser le mail').item.json.mail }}",
               "Nb contacts": "={{ 1 }}"
             },
             "matchingColumns": [],
@@ -969,7 +969,7 @@
           "toEmail": "cedrickouadio22@gmail.com",
           "subject": "[À compléter] Lead à saisir à la main",
           "emailFormat": "text",
-          "text": "={{ 'Bonjour,\\n\\nUn mail de lead n\\'a pas pu être analysé automatiquement. Une ligne « À compléter » a été créée dans le tableau de suivi.\\n\\nMail reçu :\\n' + $('Normaliser le mail').first().json.mail }}",
+          "text": "={{ 'Bonjour,\\n\\nUn mail de lead n\\'a pas pu être analysé automatiquement. Une ligne « À compléter » a été créée dans le tableau de suivi.\\n\\nMail reçu :\\n' + $('Normaliser le mail').item.json.mail }}",
           "options": {
             "appendAttribution": false
           }
@@ -1039,6 +1039,20 @@
         "position": [
           -320,
           0
+        ]
+      },
+      {
+        "parameters": {
+          "batchSize": 1,
+          "options": {}
+        },
+        "id": "f5b0a4a0-3656-4d39-a235-73ae4e38f630",
+        "name": "Une demande à la fois",
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -130,
+          100
         ]
       }
     ],
@@ -1171,7 +1185,52 @@
         "main": [
           [
             {
+              "node": "Une demande à la fois",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Une demande à la fois": {
+        "main": [
+          [],
+          [
+            {
               "node": "Extraction IA",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alerte doublon": {
+        "main": [
+          [
+            {
+              "node": "Une demande à la fois",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alerte nouveau lead": {
+        "main": [
+          [
+            {
+              "node": "Une demande à la fois",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alerte erreur IA": {
+        "main": [
+          [
+            {
+              "node": "Une demande à la fois",
               "type": "main",
               "index": 0
             }
@@ -1186,15 +1245,15 @@
     },
     "staticData": {
       "node:Mail Gmail Habitat Presto": {
-        "lastMessageUid": 2950
+        "lastMessageUid": 2980
       }
     },
     "meta": null,
     "nodeGroups": [],
     "pinData": {},
-    "versionId": "c885df18-41fb-4348-9bc6-ce7a95186ff9",
-    "activeVersionId": "c885df18-41fb-4348-9bc6-ce7a95186ff9",
-    "versionCounter": 5,
+    "versionId": "528aafea-036d-4e89-bbf0-d7299ca58488",
+    "activeVersionId": "528aafea-036d-4e89-bbf0-d7299ca58488",
+    "versionCounter": 6,
     "triggerCount": 2,
     "sourceWorkflowId": null,
     "tags": [],

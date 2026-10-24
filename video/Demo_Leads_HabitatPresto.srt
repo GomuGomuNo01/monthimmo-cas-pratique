@@ -1,0 +1,74 @@
+1
+00:00:04,250 --> 00:00:10,501
+Aujourd'hui, les demandes Habitat Presto arrivent par email.
+Si personne ne les recopie, elles ne sont jamais suivies.
+
+2
+00:00:10,751 --> 00:00:19,981
+Voici l'outil que j'ai construit : il lit chaque demande,
+la range dans un tableau et prévient le conducteur de travaux.
+
+3
+00:00:20,231 --> 00:00:29,937
+Si une information manque, ou si la lecture automatique tombe en panne,
+la demande est quand même gardée : aucun client n'est perdu.
+
+4
+00:00:30,187 --> 00:00:38,412
+Voici le tableau de suivi. Il est vide.
+Je vais lui envoyer quatre demandes de clients.
+
+5
+00:00:38,662 --> 00:00:47,230
+Demande 1 : Mme Claire D. veut rénover sa salle de bain.
+Tous ses renseignements sont dans le message.
+
+6
+00:00:47,480 --> 00:00:56,032
+Demande 2 : M. Karim B. n'a donné
+ni téléphone ni email.
+
+7
+00:00:56,282 --> 00:01:04,880
+Demande 3 : Claire réécrit, avec son numéro et son email
+écrits autrement. C'est le même client.
+
+8
+00:01:05,130 --> 00:01:13,007
+Demande 4 : un message long, avec formule de politesse
+et signature. L'outil doit s'y retrouver.
+
+9
+00:01:13,257 --> 00:01:39,007
+Les demandes sont envoyées. L'outil les lit dès leur arrivée
+et remplit le tableau tout seul. Aucune saisie à la main.
+
+10
+00:01:39,850 --> 00:01:47,025
+Résultat : trois fiches seulement.
+La deuxième demande de Claire n'a pas créé de doublon.
+
+11
+00:01:47,275 --> 00:01:54,439
+Mme Claire D. et Mme Sophie M. sont en « Nouveau ».
+M. Karim B., sans téléphone ni email, est « À compléter ».
+
+12
+00:01:54,689 --> 00:02:08,339
+La fiche de Claire a été mise à jour avec une note :
+c'est son deuxième message, il n'y a pas de doublon.
+
+13
+00:02:08,589 --> 00:02:19,042
+Pour chaque demande, le conducteur de travaux reçoit un email :
+nouvelle demande, demande à compléter ou client déjà connu.
+
+14
+00:02:19,292 --> 00:02:27,543
+Pour que le conducteur adopte l'outil : je lui montre ce qu'il gagne
+(du temps, aucun oubli) et je ne lui demande qu'un geste par client.
+
+15
+00:02:27,793 --> 00:02:36,043
+Pour savoir si ça marche, je vérifie chaque semaine :
+aucune demande perdue, clients rappelés vite, outil réellement utilisé.

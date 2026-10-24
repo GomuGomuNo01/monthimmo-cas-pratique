@@ -83,6 +83,7 @@ Plus de vingt essais au total. Chaque demande est traitée en une trentaine de s
 | Ni téléphone ni email | Fiche créée, état « À compléter », email qui le signale |
 | Budget non précisé | Fiche créée sans budget, rien d'inventé |
 | Message écrit de façon différente (politesse, autre ordre, signature) | Toutes les informations sont quand même retrouvées |
+| Quatre demandes qui arrivent presque en même temps | Traitées une par une, dans l'ordre, sans qu'aucune ne soit perdue ni mélangée |
 | Le même client qui réécrit (numéro et email écrits autrement) | Pas de nouvelle fiche : l'ancienne est mise à jour, le conducteur est prévenu |
 | Même client reconnu seulement par son téléphone, ou seulement par son email | Reconnu aussi |
 | Email sans rapport avec Habitat Presto | Ignoré |
@@ -90,6 +91,8 @@ Plus de vingt essais au total. Chaque demande est traitée en une trentaine de s
 | Une demande collée à la main dans le formulaire de secours | Traitée comme un email normal |
 
 ![Les traitements réussis dans l'outil](captures/02_executions_reussies_n8n.jpg)
+
+**Un deuxième défaut trouvé en testant :** quatre demandes envoyées d'un coup étaient traitées en même temps et pouvaient se mélanger (une fiche mise à jour avec les informations d'un autre client). L'outil traite maintenant les demandes une par une.
 
 **Un défaut trouvé en testant :** après une longue période sans demande, la connexion à la boîte email pouvait se couper et une demande passait à côté. J'ai ajouté une reconnexion automatique toutes les 5 minutes, puis vérifié qu'une demande arrivait bien ensuite.
 
@@ -141,7 +144,7 @@ Prochaines étapes possibles, de la plus utile à la moins urgente : brancher l'
 
 | Besoin | Outil |
 |---|---|
-| Enchaîner les étapes | n8n (14 étapes, uniquement des éléments prêts à l'emploi, aucun code à écrire) |
+| Enchaîner les étapes | n8n (15 étapes, uniquement des éléments prêts à l'emploi, aucun code à écrire) |
 | Lire un email et en extraire les informations | Claude Haiku, un modèle d'IA économique, réglé pour ne rien inventer |
 | Tableau de suivi | Airtable |
 | Recevoir les demandes et envoyer les alertes | Gmail |
