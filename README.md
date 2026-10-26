@@ -21,9 +21,10 @@ Cas pratique réalisé pour une candidature en alternance « IA Builder » chez 
 3. [Les situations que j'ai testées](#3-les-situations-que-jai-testées)
 4. [Faire adopter l'outil et mesurer qu'il fonctionne](#4-faire-adopter-loutil-et-mesurer-quil-fonctionne)
 5. [Avant une vraie mise en service](#5-avant-une-vraie-mise-en-service)
-6. [Pour les curieux : le détail technique](#6-pour-les-curieux--le-détail-technique)
-7. [Contenu du dépôt](#7-contenu-du-dépôt)
-8. [Auteur](#auteur)
+6. [Mettre en place le même système, pas à pas](#6-mettre-en-place-le-même-système-pas-à-pas)
+7. [Pour les curieux : le détail technique](#7-pour-les-curieux--le-détail-technique)
+8. [Contenu du dépôt](#8-contenu-du-dépôt)
+9. [Auteur](#auteur)
 
 ## 1. Comment ça marche
 
@@ -135,10 +136,116 @@ Ses limites actuelles :
 
 Prochaines étapes possibles, de la plus utile à la moins urgente : brancher l'outil sur vos vraies adresses et votre vrai tableau, envoyer un accusé de réception automatique au client, étendre la même idée aux devis du pôle travaux, suivre les délais de réponse.
 
-## 6. Pour les curieux : le détail technique
+## 6. Mettre en place le même système, pas à pas
+
+Ce guide permet de refaire l'outil de zéro. Compte environ 1 h 30 la première fois. Tout se fait avec des comptes gratuits, sauf l'IA, qui coûte quelques centimes pour des tests.
+
+### Ce qu'il faut préparer
+
+| Élément | À quoi il sert | Où le créer |
+|---|---|---|
+| **Boîte Gmail « leads »** | Elle reçoit les demandes. L'outil la lit. | Un compte Gmail à toi |
+| **Boîte Gmail « alertes »** (peut être la même ou une autre) | Elle envoie les alertes au conducteur. | Un compte Gmail à toi |
+| **Compte Airtable** (gratuit) | Il contient le tableau de suivi. | airtable.com |
+| **Clé d'accès Anthropic** | Elle permet à l'IA de lire les emails. | console.anthropic.com, section « API keys » |
+| **n8n** | Il enchaîne toutes les étapes. | Installé sur ton ordinateur (étape 4) |
+
+### Étape 1 : créer le tableau dans Airtable
+
+1. Crée une base (par exemple « MonthImmo Leads ») avec une table nommée exactement `Leads`.
+2. Ajoute ces champs, avec **exactement** ces noms (sans accent pour `Telephone`, `Delai` et `Date reception`) :
+
+| Champ | Type Airtable |
+|---|---|
+| Nom, Ville, Type de travaux, Delai, Commentaire, Responsable, Source | Texte (une ligne ou plusieurs lignes) |
+| Telephone | Texte sur une ligne |
+| Email | Texte (une ligne ou plusieurs lignes) |
+| Budget min, Budget max, Nb contacts | Nombre |
+| Statut | Sélection unique : `Nouveau`, `À compléter`, `Appelé`, `RDV pris`, `Devis envoyé`, `Gagné`, `Perdu` |
+| Date reception, Date de relance | Date, format européen (JJ/MM/AAAA), sans heure |
+| Statut modifie le | « Date et heure de dernière modification », limitée au champ `Statut`, format 24 h, fuseau Europe/Paris |
+
+3. Crée une deuxième vue nommée « À rappeler aujourd'hui » : filtre `Date de relance` est aujourd'hui ou avant, ET `Statut` n'est ni `Gagné` ni `Perdu`.
+4. Crée un **jeton d'accès personnel** : airtable.com/create/tokens, droits `data.records:read`, `data.records:write` et `schema.bases:read`, accès limité à ta base. Copie-le : il ne s'affiche qu'une fois.
+
+### Étape 2 : préparer les boîtes Gmail
+
+1. Dans chaque compte Gmail, active la **validation en deux étapes** (compte Google, Sécurité).
+2. Crée un **mot de passe d'application** : myaccount.google.com/apppasswords, nomme-le « n8n ». Google te donne 16 caractères : copie-les. Fais-le pour la boîte « leads » et pour la boîte « alertes ».
+3. Dans la boîte « leads », crée un **filtre** (Paramètres, Filtres et adresses bloquées, Créer un filtre) : objet contient `Habitat Presto`, action « Ne jamais envoyer dans le dossier Spam ». Sans lui, les mails d'adresses inconnues peuvent finir en spam et ne jamais être lus.
+
+### Étape 3 : récupérer la clé Anthropic
+
+Sur console.anthropic.com, crée une clé nommée par exemple `monthimmo-cas-pratique` et copie-la. Ajoute un peu de crédit (quelques euros suffisent pour des tests).
+
+### Étape 4 : installer et lancer n8n
+
+1. Installe Node.js (version 20 ou plus) depuis nodejs.org.
+2. Dans un terminal :
+
+```bash
+npm install -g n8n
+n8n start
+```
+
+3. Ouvre http://localhost:5678 et crée ton compte propriétaire.
+4. **Laisse le terminal ouvert** : n8n ne tourne que tant qu'il l'est, et que l'ordinateur est allumé et non en veille.
+
+### Étape 5 : importer le workflow
+
+Dans n8n : menu « Workflows », bouton « Import from file », puis choisis [Leads_HabitatPresto_n8n.json](workflow/Leads_HabitatPresto_n8n.json). Le fichier ne contient ni clé ni mot de passe : chaque étape va donc te demander de connecter ses accès.
+
+### Étape 6 : créer les accès (« credentials »)
+
+Dans n8n, ouvre chacune des étapes ci-dessous, clique sur « Create new credential » et remplis :
+
+| Étape du workflow | Type d'accès | À remplir |
+|---|---|---|
+| Mail Gmail Habitat Presto | IMAP | Hôte `imap.gmail.com`, port `993`, SSL activé, utilisateur = adresse « leads », mot de passe = mot de passe d'application |
+| Alerte doublon, Alerte nouveau lead, Alerte erreur IA (3 étapes) | SMTP | Hôte `smtp.gmail.com`, port `465`, SSL activé, utilisateur = adresse « alertes », mot de passe = son mot de passe d'application |
+| Chercher un doublon, Mettre à jour la fiche, Créer le lead, Créer le lead (sans IA) (4 étapes) | Airtable (jeton) | Le jeton d'accès de l'étape 1 |
+| Claude Haiku | Anthropic | La clé de l'étape 3 |
+
+Un même accès peut être réutilisé : le SMTP pour les trois alertes, Airtable pour les quatre étapes.
+
+### Étape 7 : adapter trois choses
+
+1. **La base et la table Airtable** : dans chacune des 4 étapes Airtable, choisis ta base et ta table `Leads` dans les listes.
+2. **L'adresse des alertes** : dans les 3 étapes d'alerte, remplace l'adresse d'expéditeur et de destinataire (dans l'export, c'est mon adresse de test `cedrickouadio22@gmail.com`).
+3. **Le fuseau horaire** : dans les réglages du workflow, vérifie `Europe/Paris`.
+
+Dans l'étape « Claude Haiku », vérifie aussi que le modèle est un modèle Claude Haiku, avec une température à 0.
+
+### Étape 8 : publier et tester
+
+1. Clique sur **Publish** (en haut à droite), puis valide.
+2. Envoie un email **depuis une autre adresse** vers la boîte « leads », avec l'objet `Nouveau lead Habitat Presto` et, dans le corps, un des textes de [leads_test.txt](leads_test.txt). Un mail envoyé à soi-même n'est pas lu.
+3. Attends 15 à 40 secondes : une ligne apparaît dans Airtable et l'alerte arrive dans la boîte « alertes ».
+4. Teste ensuite les autres cas de [leads_test.txt](leads_test.txt) : demande incomplète, même client qui réécrit, message long avec signature.
+
+Si tu n'as pas de seconde adresse, utilise le formulaire de secours : une fois le workflow publié, son adresse est visible dans l'étape « Formulaire lead » (« Production URL »).
+
+### Si quelque chose ne marche pas
+
+| Symptôme | Cause probable et solution |
+|---|---|
+| Rien ne se passe après l'envoi du mail | n8n est arrêté (relance `n8n start`), ou l'objet ne contient pas « Habitat Presto », ou le mail est en spam (regarde le dossier Spam, voir étape 2) |
+| Le mail part de la même boîte que celle lue | Il n'est pas vu comme « non lu » : envoie-le depuis une autre adresse |
+| Erreur d'accès Airtable | Le jeton n'a pas les trois droits, ou ne donne pas accès à la base |
+| Erreur d'accès Gmail | Il faut le mot de passe d'application de 16 caractères, pas le mot de passe normal du compte |
+| La fiche reste vide ou erronée | Les noms de champs Airtable ne sont pas exactement ceux de l'étape 1 |
+| Pas d'alerte | L'accès SMTP est mal rempli, ou l'alerte est dans les spams de la boîte « alertes » |
+| Fiche « À compléter » avec le mail brut | La clé Anthropic est invalide, sans crédit, ou le modèle n'existe plus : l'outil a bien basculé sur la branche de secours |
+| Une demande est manquée après une longue inactivité | La connexion à la boîte s'est coupée. L'outil se reconnecte seul toutes les 5 minutes |
+
+### Pour passer en production
+
+Prévois une adresse email dédiée aux demandes, le vrai destinataire des alertes, et un ordinateur ou un serveur toujours allumé (par exemple n8n hébergé avec Docker). Garde les accès dans n8n uniquement, et révoque ceux d'un test quand tu n'en as plus besoin.
+
+## 7. Pour les curieux : le détail technique
 
 <details>
-<summary><b>Voir les outils, les règles et l'installation</b></summary>
+<summary><b>Voir les outils et les règles appliquées</b></summary>
 
 ### Les outils utilisés
 
@@ -165,16 +272,6 @@ Prochaines étapes possibles, de la plus utile à la moins urgente : brancher l'
 
 ![L'heure de dernière modification d'une fiche, en heure de Paris](captures/10_airtable_statut_modifie_heure_paris.jpg)
 
-### Installation
-
-Il faut n8n (version 2), un compte Airtable, un compte Gmail avec un mot de passe d'application et une clé d'accès Anthropic.
-
-1. Dans Airtable, créer une base avec une table `Leads` portant les champs : Nom, Telephone, Email, Ville, Type de travaux, Budget min, Budget max, Delai, Statut (Nouveau, À compléter, Appelé, RDV pris, Devis envoyé, Gagné, Perdu), Responsable, Date reception, Date de relance, Commentaire, Nb contacts, Source, Statut modifie le. Créer aussi un jeton d'accès personnel.
-2. Dans n8n, importer [Leads_HabitatPresto_n8n.json](workflow/Leads_HabitatPresto_n8n.json). L'export ne contient aucun identifiant.
-3. Créer les accès : lecture Gmail, envoi Gmail, Airtable, Anthropic.
-4. Adapter l'identifiant de la base Airtable dans les trois étapes Airtable, et l'adresse du destinataire dans les trois étapes d'alerte.
-5. Publier le workflow, puis envoyer un email d'objet `Nouveau lead Habitat Presto` à la boîte lue. Le texte peut venir de [leads_test.txt](leads_test.txt). Sans Gmail, le formulaire de secours accepte un texte collé à la main.
-
 ### Sécurité
 
 - Aucune clé, mot de passe ou jeton dans ce dépôt.
@@ -183,7 +280,7 @@ Il faut n8n (version 2), un compte Airtable, un compte Gmail avec un mot de pass
 
 </details>
 
-## 7. Contenu du dépôt
+## 8. Contenu du dépôt
 
 ```text
 .
