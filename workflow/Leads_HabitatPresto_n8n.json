@@ -397,7 +397,7 @@
             "mappingMode": "defineBelow",
             "value": {
               "id": "={{ $json.id }}",
-              "Commentaire": "={{ ($json.Commentaire ? $json.Commentaire + ' | ' : '') + 'Nouveau contact le ' + $now.toFormat('dd/MM/yyyy') + ' via Habitat Presto (doublon détecté automatiquement). Nouvelle demande : ' + ($('Préparer le lead').item.json['Type de travaux'] || 'travaux non précisés') + ', budget ' + ($('Préparer le lead').item.json['Budget min'] ? ($('Préparer le lead').item.json['Budget min'] === $('Préparer le lead').item.json['Budget max'] ? $('Préparer le lead').item.json['Budget min'] + ' €' : $('Préparer le lead').item.json['Budget min'] + ' à ' + $('Préparer le lead').item.json['Budget max'] + ' €') : 'non précisé') + ', délai ' + ($('Préparer le lead').item.json.Delai || 'non précisé') + '.' }}",
+              "Commentaire": "={{ ($json.Commentaire ? $json.Commentaire + '\\n' : '') + '- ' + $now.toFormat('dd/MM') + ' : ' + ($('Préparer le lead').item.json['Type de travaux'] ? ($('Préparer le lead').item.json['Type de travaux'].length > 70 ? $('Préparer le lead').item.json['Type de travaux'].slice(0, 67) + '...' : $('Préparer le lead').item.json['Type de travaux']) : 'travaux non précisés') + ', ' + ($('Préparer le lead').item.json['Budget min'] ? ($('Préparer le lead').item.json['Budget min'] === $('Préparer le lead').item.json['Budget max'] ? $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' €' : $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' à ' + $('Préparer le lead').item.json['Budget max'].toLocaleString('fr-FR') + ' €') : 'budget non précisé') + ', ' + ($('Préparer le lead').item.json.Delai || 'délai non précisé') }}",
               "Nb contacts": "={{ ($json['Nb contacts'] || 1) + 1 }}",
               "Date de relance": "={{ $now.plus({ days: 1 }).toFormat('yyyy-MM-dd') }}"
             },
@@ -1251,8 +1251,8 @@
     "meta": null,
     "nodeGroups": [],
     "pinData": {},
-    "versionId": "578118c3-7be5-45c2-9dc0-20128b809a0d",
-    "activeVersionId": "578118c3-7be5-45c2-9dc0-20128b809a0d",
+    "versionId": "97863244-d66c-44cf-8e13-d7c55c689b7b",
+    "activeVersionId": "97863244-d66c-44cf-8e13-d7c55c689b7b",
     "versionCounter": 6,
     "triggerCount": 2,
     "sourceWorkflowId": null,
