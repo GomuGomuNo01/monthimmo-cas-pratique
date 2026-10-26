@@ -397,7 +397,6 @@
             "mappingMode": "defineBelow",
             "value": {
               "id": "={{ $json.id }}",
-              "Commentaire": "={{ ($json.Commentaire ? $json.Commentaire + '\\n' : '') + '- ' + $now.toFormat('dd/MM') + ' : ' + ($('Préparer le lead').item.json['Type de travaux'] ? ($('Préparer le lead').item.json['Type de travaux'].length > 70 ? $('Préparer le lead').item.json['Type de travaux'].slice(0, 67) + '...' : $('Préparer le lead').item.json['Type de travaux']) : 'travaux non précisés') + ', ' + ($('Préparer le lead').item.json['Budget min'] ? ($('Préparer le lead').item.json['Budget min'] === $('Préparer le lead').item.json['Budget max'] ? $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' €' : $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' à ' + $('Préparer le lead').item.json['Budget max'].toLocaleString('fr-FR') + ' €') : 'budget non précisé') + ', ' + ($('Préparer le lead').item.json.Delai || 'délai non précisé') }}",
               "Nb contacts": "={{ ($json['Nb contacts'] || 1) + 1 }}",
               "Date de relance": "={{ $now.plus({ days: 1 }).toFormat('yyyy-MM-dd') }}"
             },
@@ -414,17 +413,6 @@
                 "display": true,
                 "type": "string",
                 "readOnly": true,
-                "removed": false
-              },
-              {
-                "id": "Commentaire",
-                "displayName": "Commentaire",
-                "required": false,
-                "defaultMatch": false,
-                "canBeUsedToMatch": true,
-                "display": true,
-                "type": "string",
-                "readOnly": false,
                 "removed": false
               },
               {
@@ -700,7 +688,7 @@
           "toEmail": "cedrickouadio22@gmail.com",
           "subject": "={{ '[Doublon] ' + ($('Préparer le lead').item.json.Nom || 'Client') + ' - ' + ($('Préparer le lead').item.json.Ville || 'ville inconnue') }}",
           "emailFormat": "text",
-          "text": "={{ 'Bonjour,\\n\\nCe client a déjà une fiche dans le tableau de suivi : aucune nouvelle ligne n\\'a été créée.\\n\\n' + 'Client : ' + ($('Préparer le lead').item.json.Nom || 'non renseigné') + '\\n' + 'Téléphone : ' + ($('Préparer le lead').item.json.Telephone || 'non renseigné') + '\\n' + 'Email : ' + ($('Préparer le lead').item.json.Email || 'non renseigné') + '\\n' + 'Nouvelle demande : ' + ($('Préparer le lead').item.json['Type de travaux'] || 'non précisée') + '\\n\\n' + 'La fiche existante a été mise à jour (commentaire et nombre de contacts). Pensez à rappeler ce client.\\n' }}",
+          "text": "={{ 'Bonjour,\\n\\nCe client a déjà une fiche dans le tableau de suivi : aucune nouvelle ligne n\\'a été créée.\\n\\n' + 'Client : ' + ($('Préparer le lead').item.json.Nom || 'non renseigné') + '\\n' + 'Téléphone : ' + ($('Préparer le lead').item.json.Telephone || 'non renseigné') + '\\n' + 'Email : ' + ($('Préparer le lead').item.json.Email || 'non renseigné') + '\\n' + 'Nouvelle demande : ' + ($('Préparer le lead').item.json['Type de travaux'] || 'non précisée') + '\\n\\n' + 'La fiche existante a été mise à jour (nombre de contacts) et la nouvelle demande a été ajoutée au tableau Demandes. Pensez à rappeler ce client.\\n' }}",
           "options": {
             "appendAttribution": false
           }
@@ -710,7 +698,7 @@
         "type": "n8n-nodes-base.emailSend",
         "typeVersion": 2.1,
         "position": [
-          1424,
+          1664,
           -32
         ],
         "webhookId": "95645fc2-08bd-48e4-8b12-e729d2f55e0f",
@@ -737,7 +725,7 @@
         "type": "n8n-nodes-base.emailSend",
         "typeVersion": 2.1,
         "position": [
-          1424,
+          1664,
           224
         ],
         "webhookId": "bf54bd42-82e5-43d4-824a-359bfd0711ff",
@@ -1054,6 +1042,234 @@
           -130,
           100
         ]
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "base": {
+            "__rl": true,
+            "mode": "id",
+            "value": "appreB902fRBB9HtK"
+          },
+          "table": {
+            "__rl": true,
+            "mode": "id",
+            "value": "tblkWPXfyKZiWj3eC"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Demande": "={{ $now.toFormat('dd/MM') + ' - ' + ($('Préparer le lead').item.json['Type de travaux'] ? ($('Préparer le lead').item.json['Type de travaux'].length > 60 ? $('Préparer le lead').item.json['Type de travaux'].slice(0, 57) + '...' : $('Préparer le lead').item.json['Type de travaux']) : 'travaux non précisés') }}",
+              "Lead": "={{ [$json.id] }}",
+              "Type de travaux": "={{ $('Préparer le lead').item.json['Type de travaux'] }}",
+              "Date reception": "={{ $('Préparer le lead').item.json['Date reception'] }}",
+              "Budget": "={{ $('Préparer le lead').item.json['Budget min'] ? ($('Préparer le lead').item.json['Budget min'] === $('Préparer le lead').item.json['Budget max'] ? $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' €' : $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' à ' + $('Préparer le lead').item.json['Budget max'].toLocaleString('fr-FR') + ' €') : 'non précisé' }}",
+              "Delai": "={{ $('Préparer le lead').item.json['Delai'] }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Demande",
+                "displayName": "Demande",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Lead",
+                "displayName": "Lead",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Type de travaux",
+                "displayName": "Type de travaux",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Date reception",
+                "displayName": "Date reception",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Budget",
+                "displayName": "Budget",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Delai",
+                "displayName": "Delai",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {
+            "typecast": true
+          }
+        },
+        "id": "550339cb-a9d3-4dfc-b407-3b90fcd67dea",
+        "name": "Créer la demande",
+        "type": "n8n-nodes-base.airtable",
+        "typeVersion": 2.1,
+        "position": [
+          1424,
+          224
+        ],
+        "credentials": {
+          "airtableTokenApi": {
+            "id": "1nhMnE206MqmQT19",
+            "name": "Airtable Personal Access Token account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "create",
+          "base": {
+            "__rl": true,
+            "mode": "id",
+            "value": "appreB902fRBB9HtK"
+          },
+          "table": {
+            "__rl": true,
+            "mode": "id",
+            "value": "tblkWPXfyKZiWj3eC"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Demande": "={{ $now.toFormat('dd/MM') + ' - ' + ($('Préparer le lead').item.json['Type de travaux'] ? ($('Préparer le lead').item.json['Type de travaux'].length > 60 ? $('Préparer le lead').item.json['Type de travaux'].slice(0, 57) + '...' : $('Préparer le lead').item.json['Type de travaux']) : 'travaux non précisés') }}",
+              "Lead": "={{ [$json.id] }}",
+              "Type de travaux": "={{ $('Préparer le lead').item.json['Type de travaux'] }}",
+              "Date reception": "={{ $('Préparer le lead').item.json['Date reception'] }}",
+              "Budget": "={{ $('Préparer le lead').item.json['Budget min'] ? ($('Préparer le lead').item.json['Budget min'] === $('Préparer le lead').item.json['Budget max'] ? $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' €' : $('Préparer le lead').item.json['Budget min'].toLocaleString('fr-FR') + ' à ' + $('Préparer le lead').item.json['Budget max'].toLocaleString('fr-FR') + ' €') : 'non précisé' }}",
+              "Delai": "={{ $('Préparer le lead').item.json['Delai'] }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Demande",
+                "displayName": "Demande",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Lead",
+                "displayName": "Lead",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Type de travaux",
+                "displayName": "Type de travaux",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Date reception",
+                "displayName": "Date reception",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Budget",
+                "displayName": "Budget",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "Delai",
+                "displayName": "Delai",
+                "required": false,
+                "defaultMatch": false,
+                "canBeUsedToMatch": true,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {
+            "typecast": true
+          }
+        },
+        "id": "d5dccd5e-8d9a-4075-b97a-9f817e50a1e0",
+        "name": "Créer la demande (doublon)",
+        "type": "n8n-nodes-base.airtable",
+        "typeVersion": 2.1,
+        "position": [
+          1424,
+          -32
+        ],
+        "credentials": {
+          "airtableTokenApi": {
+            "id": "1nhMnE206MqmQT19",
+            "name": "Airtable Personal Access Token account"
+          }
+        }
       }
     ],
     "connections": {
@@ -1141,7 +1357,7 @@
         "main": [
           [
             {
-              "node": "Alerte doublon",
+              "node": "Créer la demande (doublon)",
               "type": "main",
               "index": 0
             }
@@ -1152,7 +1368,7 @@
         "main": [
           [
             {
-              "node": "Alerte nouveau lead",
+              "node": "Créer la demande",
               "type": "main",
               "index": 0
             }
@@ -1231,6 +1447,28 @@
           [
             {
               "node": "Une demande à la fois",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Créer la demande (doublon)": {
+        "main": [
+          [
+            {
+              "node": "Alerte doublon",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Créer la demande": {
+        "main": [
+          [
+            {
+              "node": "Alerte nouveau lead",
               "type": "main",
               "index": 0
             }

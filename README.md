@@ -42,7 +42,7 @@ En quatre temps :
 
 1. **La demande arrive** par email, comme aujourd'hui.
 2. **L'outil la lit** et retrouve les informations utiles : nom, téléphone, email, ville, travaux, budget et délai souhaité.
-3. **Il range le client** dans le tableau de suivi. Si le client a déjà écrit, il retrouve sa fiche au lieu d'en créer une deuxième : pas d'appel en double. La fiche d'origine est conservée ; la nouvelle demande est notée en une ligne courte dans son commentaire.
+3. **Il range le client** dans le tableau de suivi. Si le client a déjà écrit, il retrouve sa fiche au lieu d'en créer une deuxième : pas d'appel en double. La fiche d'origine est conservée ; la nouvelle demande est ajoutée dans un second tableau, « Demandes », rattachée à la fiche du client.
 4. **Le conducteur est prévenu** par email, avec de quoi rappeler le client tout de suite.
 
 Et si quelque chose ne va pas, aucun client n'est perdu :
@@ -62,7 +62,7 @@ Toutes les dates sont au format français (JJ/MM/AAAA) et les heures sur 24 h, e
 
 ![Date de rappel et commentaire de chaque client](captures/09_airtable_relance_commentaire.jpg)
 
-*Le commentaire de Mme Claire D. garde la trace de son deuxième contact. Quand un client réécrit, la fiche d'origine n'est pas écrasée : seuls le commentaire (une ligne courte par nouvelle demande, par exemple « - 26/10 : Remplacement de la baignoire, 9 000 €, dans 2 mois »), le nombre de contacts et la date de rappel changent.*
+*La fiche de Mme Claire D. garde la trace de son deuxième contact. Quand un client réécrit, la fiche d'origine n'est pas écrasée : seuls le nombre de contacts et la date de rappel changent. Chaque demande reçue (travaux, budget, délai, date) est une ligne du tableau « Demandes », liée à la fiche du client : on les lit une par une, sans commentaire à rallonge.*
 
 **Les emails d'alerte.** À chaque demande traitée, le conducteur reçoit un email dont l'objet dit tout de suite de quoi il s'agit : [Nouveau lead], [À compléter] ou [Doublon].
 
@@ -85,7 +85,7 @@ Plus de vingt essais au total. Chaque demande est traitée en une trentaine de s
 | Budget non précisé | Fiche créée sans budget, rien d'inventé |
 | Message écrit de façon différente (politesse, autre ordre, signature) | Toutes les informations sont quand même retrouvées |
 | Quatre demandes qui arrivent presque en même temps | Traitées une par une, dans l'ordre, sans qu'aucune ne soit perdue ni mélangée |
-| Le même client qui réécrit (numéro et email écrits autrement) | Pas de nouvelle fiche : l'ancienne est conservée, son nombre de contacts passe à 2 et la nouvelle demande est ajoutée au commentaire, sur une ligne courte (date, travaux, budget, délai). Le conducteur est prévenu |
+| Le même client qui réécrit (numéro et email écrits autrement) | Pas de nouvelle fiche : l'ancienne est conservée, son nombre de contacts passe à 2 et la nouvelle demande est ajoutée comme une ligne du tableau « Demandes », liée à la fiche (date, travaux, budget, délai). Le conducteur est prévenu |
 | Même client reconnu seulement par son téléphone, ou seulement par son email | Reconnu aussi |
 | Email sans rapport avec Habitat Presto | Ignoré |
 | Le service de lecture est en panne | Fiche « À compléter » avec le message d'origine, email d'alerte |
@@ -159,6 +159,8 @@ Ce guide permet de refaire l'outil de zéro. Compte environ 1 h 30 la première 
 | Champ | Type Airtable |
 |---|---|
 | Nom, Ville, Type de travaux, Delai, Commentaire, Responsable, Source | Texte (une ligne ou plusieurs lignes) |
+
+Un second tableau, **Demandes**, contient : Demande (texte, titre « JJ/MM - travaux »), Type de travaux (texte), Lead (lien vers une entrée du tableau Leads), Date reception (date), Budget (texte), Delai (texte). Dans Leads, le champ « Demandes » se crée tout seul à la création du lien. Une ligne de Demandes est ajoutée à chaque demande reçue, y compris les réécritures d'un client connu.
 | Telephone | Texte sur une ligne |
 | Email | Texte (une ligne ou plusieurs lignes) |
 | Budget min, Budget max, Nb contacts | Nombre |
@@ -204,14 +206,14 @@ Dans n8n, ouvre chacune des étapes ci-dessous, clique sur « Create new credent
 |---|---|---|
 | Mail Gmail Habitat Presto | IMAP | Hôte `imap.gmail.com`, port `993`, SSL activé, utilisateur = adresse « leads », mot de passe = mot de passe d'application |
 | Alerte doublon, Alerte nouveau lead, Alerte erreur IA (3 étapes) | SMTP | Hôte `smtp.gmail.com`, port `465`, SSL activé, utilisateur = adresse « alertes », mot de passe = son mot de passe d'application |
-| Chercher un doublon, Mettre à jour la fiche, Créer le lead, Créer le lead (sans IA) (4 étapes) | Airtable (jeton) | Le jeton d'accès de l'étape 1 |
+| Chercher un doublon, Mettre à jour la fiche, Créer le lead, Créer la demande, Créer la demande (doublon), Créer le lead (sans IA) (6 étapes) | Airtable (jeton) | Le jeton d'accès de l'étape 1 |
 | Claude Haiku | Anthropic | La clé de l'étape 3 |
 
-Un même accès peut être réutilisé : le SMTP pour les trois alertes, Airtable pour les quatre étapes.
+Un même accès peut être réutilisé : le SMTP pour les trois alertes, Airtable pour les six étapes.
 
 ### Étape 7 : adapter trois choses
 
-1. **La base et la table Airtable** : dans chacune des 4 étapes Airtable, choisis ta base et ta table `Leads` dans les listes.
+1. **La base et la table Airtable** : dans chacune des 6 étapes Airtable, choisis ta base et ta table dans les listes (`Leads` ; `Demandes` pour les deux étapes « Créer la demande »).
 2. **L'adresse des alertes** : dans les 3 étapes d'alerte, remplace l'adresse d'expéditeur et de destinataire (dans l'export, c'est mon adresse de test `cedrickouadio22@gmail.com`).
 3. **Le fuseau horaire** : dans les réglages du workflow, vérifie `Europe/Paris`.
 
@@ -252,7 +254,7 @@ Prévois une adresse email dédiée aux demandes, le vrai destinataire des alert
 
 | Besoin | Outil |
 |---|---|
-| Enchaîner les étapes | n8n (15 étapes, uniquement des éléments prêts à l'emploi, aucun code à écrire) |
+| Enchaîner les étapes | n8n (17 étapes, uniquement des éléments prêts à l'emploi, aucun code à écrire) |
 | Lire un email et en extraire les informations | Claude Haiku, un modèle d'IA économique, réglé pour ne rien inventer |
 | Tableau de suivi | Airtable |
 | Recevoir les demandes et envoyer les alertes | Gmail |
@@ -267,7 +269,7 @@ Prévois une adresse email dédiée aux demandes, le vrai destinataire des alert
 | État « À compléter » | Dans tous les autres cas, avec la raison dans le commentaire |
 | Téléphone | Mis au format +33 |
 | Client déjà connu | Même email (majuscules ignorées) ou mêmes 9 derniers chiffres de téléphone. Le nom n'est pas comparé |
-| Fiche d'un client déjà connu | Conservée telle quelle. Seuls changent : le commentaire (une ligne courte ajoutée : date, travaux limités à 70 caractères, budget, délai), le nombre de contacts (+1) et la date de rappel (demain) |
+| Fiche d'un client déjà connu | Conservée telle quelle. Seuls changent le nombre de contacts (+1) et la date de rappel (demain). La nouvelle demande (date, travaux, budget, délai) devient une ligne du tableau « Demandes », liée à la fiche |
 | Date de rappel | Réception + 2 jours (+ 1 jour à chaque nouveau contact d'un client connu) |
 | Fiabilité de la lecture | Consigne « n'invente rien », réglage stable d'une fois sur l'autre, contrôle des résultats par des règles simples |
 | Dates et heures | Format JJ/MM/AAAA, 24 h, fuseau Europe/Paris dans Airtable et dans n8n |
