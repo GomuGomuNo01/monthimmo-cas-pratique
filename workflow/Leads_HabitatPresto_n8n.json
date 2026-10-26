@@ -397,7 +397,7 @@
             "mappingMode": "defineBelow",
             "value": {
               "id": "={{ $json.id }}",
-              "Commentaire": "={{ ($json.Commentaire ? $json.Commentaire + ' | ' : '') + 'Nouveau contact le ' + $now.toFormat('dd/MM/yyyy') + ' via Habitat Presto (doublon détecté automatiquement).' }}",
+              "Commentaire": "={{ ($json.Commentaire ? $json.Commentaire + ' | ' : '') + 'Nouveau contact le ' + $now.toFormat('dd/MM/yyyy') + ' via Habitat Presto (doublon détecté automatiquement). Nouvelle demande : ' + ($('Préparer le lead').item.json['Type de travaux'] || 'travaux non précisés') + ', budget ' + ($('Préparer le lead').item.json['Budget min'] ? ($('Préparer le lead').item.json['Budget min'] === $('Préparer le lead').item.json['Budget max'] ? $('Préparer le lead').item.json['Budget min'] + ' €' : $('Préparer le lead').item.json['Budget min'] + ' à ' + $('Préparer le lead').item.json['Budget max'] + ' €') : 'non précisé') + ', délai ' + ($('Préparer le lead').item.json.Delai || 'non précisé') + '.' }}",
               "Nb contacts": "={{ ($json['Nb contacts'] || 1) + 1 }}",
               "Date de relance": "={{ $now.plus({ days: 1 }).toFormat('yyyy-MM-dd') }}"
             },
@@ -1251,8 +1251,8 @@
     "meta": null,
     "nodeGroups": [],
     "pinData": {},
-    "versionId": "528aafea-036d-4e89-bbf0-d7299ca58488",
-    "activeVersionId": "528aafea-036d-4e89-bbf0-d7299ca58488",
+    "versionId": "578118c3-7be5-45c2-9dc0-20128b809a0d",
+    "activeVersionId": "578118c3-7be5-45c2-9dc0-20128b809a0d",
     "versionCounter": 6,
     "triggerCount": 2,
     "sourceWorkflowId": null,

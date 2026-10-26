@@ -42,7 +42,7 @@ En quatre temps :
 
 1. **La demande arrive** par email, comme aujourd'hui.
 2. **L'outil la lit** et retrouve les informations utiles : nom, téléphone, email, ville, travaux, budget et délai souhaité.
-3. **Il range le client** dans le tableau de suivi. Si le client a déjà écrit, il retrouve sa fiche au lieu d'en créer une deuxième : pas d'appel en double.
+3. **Il range le client** dans le tableau de suivi. Si le client a déjà écrit, il retrouve sa fiche au lieu d'en créer une deuxième : pas d'appel en double. La fiche d'origine est conservée ; la nouvelle demande est notée dans son commentaire.
 4. **Le conducteur est prévenu** par email, avec de quoi rappeler le client tout de suite.
 
 Et si quelque chose ne va pas, aucun client n'est perdu :
@@ -62,7 +62,7 @@ Toutes les dates sont au format français (JJ/MM/AAAA) et les heures sur 24 h, e
 
 ![Date de rappel et commentaire de chaque client](captures/09_airtable_relance_commentaire.jpg)
 
-*Le commentaire de Mme Claire D. garde la trace de son deuxième contact.*
+*Le commentaire de Mme Claire D. garde la trace de son deuxième contact. Quand un client réécrit, la fiche d'origine n'est pas écrasée : seuls le commentaire (avec un résumé de la nouvelle demande), le nombre de contacts et la date de rappel changent.*
 
 **Les emails d'alerte.** À chaque demande traitée, le conducteur reçoit un email dont l'objet dit tout de suite de quoi il s'agit : [Nouveau lead], [À compléter] ou [Doublon].
 
@@ -85,7 +85,7 @@ Plus de vingt essais au total. Chaque demande est traitée en une trentaine de s
 | Budget non précisé | Fiche créée sans budget, rien d'inventé |
 | Message écrit de façon différente (politesse, autre ordre, signature) | Toutes les informations sont quand même retrouvées |
 | Quatre demandes qui arrivent presque en même temps | Traitées une par une, dans l'ordre, sans qu'aucune ne soit perdue ni mélangée |
-| Le même client qui réécrit (numéro et email écrits autrement) | Pas de nouvelle fiche : l'ancienne est mise à jour, le conducteur est prévenu |
+| Le même client qui réécrit (numéro et email écrits autrement) | Pas de nouvelle fiche : l'ancienne est conservée, son nombre de contacts passe à 2 et la nouvelle demande (travaux, budget, délai) est ajoutée au commentaire. Le conducteur est prévenu |
 | Même client reconnu seulement par son téléphone, ou seulement par son email | Reconnu aussi |
 | Email sans rapport avec Habitat Presto | Ignoré |
 | Le service de lecture est en panne | Fiche « À compléter » avec le message d'origine, email d'alerte |
@@ -129,6 +129,7 @@ L'outil est une démonstration. Pour qu'un conducteur s'en serve au quotidien, i
 Ses limites actuelles :
 
 - la reconnaissance d'un client par son téléphone est prévue pour des **numéros français** ;
+- le **nom n'est pas comparé** pour repérer un doublon : deux personnes qui partagent le même téléphone seraient vues comme un seul client ;
 - le tableau n'est **pas relié** à vos autres outils (Coda, facturation) ;
 - l'outil repère les demandes grâce à l'objet de l'email (« Habitat Presto ») : si la plateforme le change, il faudra l'adapter ;
 - il n'a été testé qu'avec de **fausses données** : le comportement sur de vrais messages (pièces jointes, formats inhabituels) n'est pas démontré ;
@@ -265,7 +266,8 @@ Prévois une adresse email dédiée aux demandes, le vrai destinataire des alert
 | État « Nouveau » | Le nom est connu et il y a au moins un moyen de contact (email ou téléphone) |
 | État « À compléter » | Dans tous les autres cas, avec la raison dans le commentaire |
 | Téléphone | Mis au format +33 |
-| Client déjà connu | Même email (majuscules ignorées) ou mêmes 9 derniers chiffres de téléphone |
+| Client déjà connu | Même email (majuscules ignorées) ou mêmes 9 derniers chiffres de téléphone. Le nom n'est pas comparé |
+| Fiche d'un client déjà connu | Conservée telle quelle. Seuls changent : le commentaire (ajout du résumé de la nouvelle demande : travaux, budget, délai), le nombre de contacts (+1) et la date de rappel (demain) |
 | Date de rappel | Réception + 2 jours (+ 1 jour à chaque nouveau contact d'un client connu) |
 | Fiabilité de la lecture | Consigne « n'invente rien », réglage stable d'une fois sur l'autre, contrôle des résultats par des règles simples |
 | Dates et heures | Format JJ/MM/AAAA, 24 h, fuseau Europe/Paris dans Airtable et dans n8n |
